@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "drizzle:push": "pnpm exec drizzle-kit push",
+    "drizzle:generate": "pnpm exec drizzle-kit generate",
+    "drizzle:studio": "pnpm exec drizzle-kit studio"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.3",
+    "@libsql/client": "^0.15.8",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.1",
+    "hono": "^4.7.10"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "drizzle-kit": "^0.31.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}

@@ -3,8 +3,9 @@ import { ref } from 'vue'
 import FeatherIcon from '@/components/FeatherIcon.vue'
 
 const inputValue = ref('')
-const patronBarcode = ref('12345')
-const itemBarcodes = ref<string[]>(['12345'])
+const patronBarcode = ref('')
+const itemBarcodes = ref<string[]>([])
+
 function handleSubmit() {
   if (inputValue.value) {
     if (!patronBarcode.value) patronBarcode.value = inputValue.value
@@ -22,6 +23,27 @@ function resetCheckout() {
 
 function removeItem(index: number) {
   itemBarcodes.value.splice(index, 1)
+}
+
+function submitCheckout() {
+  const route = 'http://localhost:3000/checkout'
+
+  console.log(route)
+
+  async function postCheckout() {
+    const result = await fetch(route, {
+      method: 'POST',
+      body: JSON.stringify({
+        patronBarcode: patronBarcode.value,
+        itemBarcodes: itemBarcodes.value.toString(),
+      }),
+    })
+
+    if (!result) return
+    resetCheckout()
+  }
+
+  postCheckout()
 }
 </script>
 
@@ -56,7 +78,11 @@ function removeItem(index: number) {
       </div>
       <div class="button-container">
         <!-- TODO: Add server action to submit checkout -->
-        <button v-if="itemBarcodes.length > 0 && patronBarcode" class="submit-button">
+        <button
+          v-if="itemBarcodes.length > 0 && patronBarcode"
+          @click="submitCheckout"
+          class="submit-button"
+        >
           Submit checkout
         </button>
       </div>
