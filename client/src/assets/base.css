@@ -2,4 +2,9 @@
 
 * {
   font-family: Arial, Helvetica, sans-serif;
+  interpolate-size: allow-keywords;
+}
+
+button {
+  padding: 0.375rem;
 }
