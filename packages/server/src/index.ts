@@ -14,12 +14,23 @@ app.get('/', async (c) => {
   return c.text('Hello Hono!');
 });
 
+// TODO: handle failed insertions
 app.post('/checkout', async (c) => {
   // To get the JSON body:
-  const body = await c.req.json();
-  const success = await insertCheckout(body.patronBarcode, body.itemBarcodes);
-  if (!success) return c.text('Unable to save checkout');
-  return c.text('Checkout saved!');
+  const { patronBarcode, itemBarcodes } = await c.req.json();
+
+  if (typeof patronBarcode !== 'string' || !(itemBarcodes instanceof Array)) {
+    return c.text('Bad request');
+  }
+
+  const inserts = itemBarcodes.map((barcode) =>
+    insertCheckout(patronBarcode, barcode as string)
+  );
+  const results = await Promise.allSettled(inserts); // all promises always fulfilled
+  const failures = results.filter((result) => result.status === 'rejected');
+  console.log(results);
+  console.log(failures);
+  return c.json(failures);
 });
 
 serve(

@@ -31,15 +31,16 @@ function submitCheckout() {
   console.log(route)
 
   async function postCheckout() {
-    const result = await fetch(route, {
+    const res = await fetch(route, {
       method: 'POST',
       body: JSON.stringify({
         patronBarcode: patronBarcode.value,
-        itemBarcodes: itemBarcodes.value.toString(),
+        itemBarcodes: itemBarcodes.value,
       }),
     })
 
-    if (!result) return
+    console.log(await res.json())
+
     resetCheckout()
   }
 
