@@ -39,7 +39,9 @@ function submitCheckout() {
       }),
     })
 
-    console.log(await res.json())
+    const json = await res.json()
+
+    if (!json.success) return // TODO: Add error message
 
     resetCheckout()
   }

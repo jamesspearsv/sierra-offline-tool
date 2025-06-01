@@ -19,24 +19,29 @@ export async function selectCheckouts() {
   }
 }
 
-export async function insertCheckout(
+export async function insertCheckouts(
   patronBarcode: string,
-  itemBarcode: string
-): Promise<Result<{ patronBarcode: string; itemBarcode: string }>> {
+  itemBarcodes: string[]
+): Promise<Result<{ patronBarcode: string; itemBarcodes: string[] }>> {
   try {
-    if (itemBarcode === 'james') throw new Error('debug error');
-    await db.insert(checkouts).values({ patronBarcode, itemBarcode });
+    await db.transaction(async (tx) => {
+      for (const itemBarcode of itemBarcodes) {
+        if (itemBarcode === 'debug') throw new Error('Debuging Error');
+        await tx.insert(checkouts).values({ patronBarcode, itemBarcode });
+      }
+    });
+
     return {
       success: true,
       message: 'Insert successful',
-      data: { patronBarcode, itemBarcode },
+      data: { patronBarcode, itemBarcodes },
     };
   } catch (error) {
     if (error instanceof Error) {
       return {
         success: false,
         message: error.message,
-        data: { patronBarcode, itemBarcode },
+        data: { patronBarcode, itemBarcodes },
       };
     }
 

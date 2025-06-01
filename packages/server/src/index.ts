@@ -1,7 +1,7 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { insertCheckout, selectCheckouts } from './db/queries.js';
+import { insertCheckouts, selectCheckouts } from './db/queries.js';
 
 const app = new Hono();
 
@@ -23,14 +23,12 @@ app.post('/checkout', async (c) => {
     return c.text('Bad request');
   }
 
-  const inserts = itemBarcodes.map((barcode) =>
-    insertCheckout(patronBarcode, barcode as string)
+  const results = await insertCheckouts(
+    patronBarcode,
+    itemBarcodes as string[]
   );
-  const results = await Promise.allSettled(inserts); // all promises always fulfilled
-  const failures = results.filter((result) => result.status === 'rejected');
-  console.log(results);
-  console.log(failures);
-  return c.json(failures);
+
+  return c.json(results);
 });
 
 serve(
