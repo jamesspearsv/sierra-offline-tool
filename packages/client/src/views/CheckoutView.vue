@@ -5,6 +5,7 @@ import FeatherIcon from '@/components/FeatherIcon.vue'
 const inputValue = ref('')
 const patronBarcode = ref('')
 const itemBarcodes = ref<string[]>([])
+const error = ref('')
 
 function handleSubmit() {
   if (inputValue.value) {
@@ -19,19 +20,19 @@ function resetCheckout() {
   inputValue.value = ''
   patronBarcode.value = ''
   itemBarcodes.value = []
+  error.value = ''
 }
 
 function removeItem(index: number) {
+  error.value = ''
   itemBarcodes.value.splice(index, 1)
 }
 
 function submitCheckout() {
-  const route = 'http://localhost:3000/checkout'
-
-  console.log(route)
+  const url = 'http://localhost:3000/checkouts'
 
   async function postCheckout() {
-    const res = await fetch(route, {
+    const res = await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         patronBarcode: patronBarcode.value,
@@ -41,9 +42,12 @@ function submitCheckout() {
 
     const json = await res.json()
 
-    if (!json.success) return // TODO: Add error message
-
-    resetCheckout()
+    if (!json.success) {
+      // TODO: Improve error handling
+      error.value = 'Unable to save checkout. Try again'
+    } else {
+      resetCheckout()
+    }
   }
 
   postCheckout()
@@ -59,17 +63,21 @@ function submitCheckout() {
           <input type="text" name="barcode" v-model.trim="inputValue" autocomplete="off" />
         </fieldset>
       </form>
-      <button :class="{ 'hidden-element': !patronBarcode }" @click="resetCheckout">
+      <button
+        :class="{ 'hidden-element': !patronBarcode, 'reset-button': true }"
+        @click="resetCheckout"
+      >
         <FeatherIcon icon="refresh-cw" />
+        <span>Reset</span>
       </button>
     </section>
     <section :class="{ 'checkout-section': true, 'hidden-element': !patronBarcode }">
       <h3>Current Checkout</h3>
       <div>
-        Patron: <span>{{ patronBarcode }}</span>
+        Patron Barcode: <span>{{ patronBarcode }}</span>
       </div>
       <div>
-        Items
+        <div>Item Barcodes</div>
         <div v-for="(item, index) in itemBarcodes">
           <div :key="index" class="item-barcode">
             <button @click="() => removeItem(index)"><FeatherIcon icon="x" /></button>
@@ -80,7 +88,6 @@ function submitCheckout() {
         </div>
       </div>
       <div class="button-container">
-        <!-- TODO: Add server action to submit checkout -->
         <button
           v-if="itemBarcodes.length > 0 && patronBarcode"
           @click="submitCheckout"
@@ -89,14 +96,20 @@ function submitCheckout() {
           Submit checkout
         </button>
       </div>
+      <div v-if="error" class="error-message">{{ error }}</div>
     </section>
   </main>
 </template>
 <style scoped>
 main {
   display: flex;
-  margin: 2rem;
+  margin: 1rem;
   gap: 1rem;
+  position: absolute;
+  bottom: 0;
+  top: var(--sp-4);
+  left: 0;
+  right: 0;
 }
 
 section {
@@ -112,8 +125,14 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100dvh - 5rem);
+  height: 100%;
   width: 70%;
+}
+
+.reset-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .checkout-section.hidden-element {
@@ -121,21 +140,22 @@ section {
 }
 
 .checkout-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-00);
   width: 30%;
-  position: relative;
-  background-color: color-mix(in srgb, var(--pico-background-color), #ffffff 4%);
-  padding: 2rem;
+  height: 100%;
+  /* background-color: color-mix(in srgb, var(--pico-background-color), #ffffff 4%); */
+  background-color: var(--pico-card-sectioning-background-color);
+  padding: var(--sp-1);
   overflow-y: scroll;
   border-radius: 0.5rem;
 }
 
-.checkout-section > .button-container {
+.button-container {
+  margin-top: auto;
   display: flex;
   justify-content: center;
-  position: absolute;
-  top: 90%;
-  left: 0;
-  right: 0;
 }
 
 .item-barcode {
@@ -155,5 +175,13 @@ section {
 
 .hidden-element {
   opacity: 0;
+}
+
+.error-message {
+  width: 100%;
+  text-align: center;
+  color: var(--c-danger);
+  font-size: 0.75rem;
+  font-style: italic;
 }
 </style>

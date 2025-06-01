@@ -1,21 +1,24 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import { insertCheckouts, selectCheckouts } from './db/queries.js';
+import {
+  insertCheckouts,
+  selectCheckouts,
+  UpdateCheckouts,
+  type Result,
+} from './db/queries.js';
 
 const app = new Hono();
 
-// TODO: handle CORS issues
 app.use('/*', cors());
 
-app.get('/', async (c) => {
-  const rows = await selectCheckouts();
-  if (rows) return c.json(rows);
-  return c.text('Hello Hono!');
+app.get('/checkouts', async (c) => {
+  const result = await selectCheckouts();
+  return c.json(result);
 });
 
 // TODO: handle failed insertions
-app.post('/checkout', async (c) => {
+app.post('/checkouts', async (c) => {
   // To get the JSON body:
   const { patronBarcode, itemBarcodes } = await c.req.json();
 
@@ -29,6 +32,16 @@ app.post('/checkout', async (c) => {
   );
 
   return c.json(results);
+});
+
+app.post('/sync', async (c) => {
+  const checkoutIDs = await c.req.json();
+  if (!(checkoutIDs instanceof Array)) {
+    return c.json({ success: false, message: 'Bad request' });
+  }
+
+  const result = await UpdateCheckouts(checkoutIDs as number[]);
+  return c.json(result);
 });
 
 serve(

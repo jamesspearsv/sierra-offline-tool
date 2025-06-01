@@ -1,21 +1,26 @@
+import { eq, isNull } from 'drizzle-orm';
 import { db } from './connection.js';
 import { checkouts } from './schema.js';
 
 export type Result<T = string> =
   | {
       success: true;
-      message: string;
       data: T;
     }
-  | { success: false; message: string; data: T };
+  | { success: false; message: string };
 
-export async function selectCheckouts() {
+export async function selectCheckouts(): Promise<
+  Result<{ id: number; patronBarcode: string; itemBarcode: string }[]>
+> {
   try {
-    const rows = await db.select().from(checkouts);
-    return rows;
+    const rows = await db
+      .select()
+      .from(checkouts)
+      .where(isNull(checkouts.syncStatus));
+    return { success: true, data: rows };
   } catch (error) {
     console.log(error);
-    return false;
+    return { success: false, message: 'Unable to select checkouts' };
   }
 }
 
@@ -27,13 +32,16 @@ export async function insertCheckouts(
     await db.transaction(async (tx) => {
       for (const itemBarcode of itemBarcodes) {
         if (itemBarcode === 'debug') throw new Error('Debuging Error');
-        await tx.insert(checkouts).values({ patronBarcode, itemBarcode });
+        await tx.insert(checkouts).values({
+          patronBarcode,
+          itemBarcode,
+          checkoutDate: new Date().toISOString().replace('T', ' '),
+        });
       }
     });
 
     return {
       success: true,
-      message: 'Insert successful',
       data: { patronBarcode, itemBarcodes },
     };
   } catch (error) {
@@ -41,10 +49,27 @@ export async function insertCheckouts(
       return {
         success: false,
         message: error.message,
-        data: { patronBarcode, itemBarcodes },
       };
     }
 
     throw new Error('Server error');
+  }
+}
+
+export async function UpdateCheckouts(checkoutIDs: number[]): Promise<Result> {
+  try {
+    await db.transaction(async (tx) => {
+      for (const id of checkoutIDs) {
+        await tx
+          .update(checkouts)
+          .set({ syncStatus: new Date().toISOString().replace('T', ' ') })
+          .where(eq(checkouts.id, id));
+      }
+    });
+
+    return { success: true, data: 'Updated all checkouts' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'Unable to update checkouts' };
   }
 }
