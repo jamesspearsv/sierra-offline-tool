@@ -3,11 +3,10 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <!-- TODO: Add app layout -->
   <nav>
     <ul>
       <li><RouterLink :to="{ name: 'checkout' }">Checkout</RouterLink></li>
-      <li><RouterLink :to="{ name: 'sync' }">Sync Checkouts</RouterLink></li>
+      <li><RouterLink :to="{ name: 'sync' }">Sync</RouterLink></li>
     </ul>
   </nav>
   <RouterView />
