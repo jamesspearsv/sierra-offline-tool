@@ -17,6 +17,9 @@ importers:
       feather-icons:
         specifier: ^4.29.2
         version: 4.29.2
+      types:
+        specifier: '*'
+        version: 0.1.1
       vue:
         specifier: ^3.5.13
         version: 3.5.16(typescript@5.8.3)
@@ -90,6 +93,9 @@ importers:
       hono:
         specifier: ^4.7.10
         version: 4.7.10
+      types:
+        specifier: '*'
+        version: 0.1.1
     devDependencies:
       '@types/node':
         specifier: ^20.11.17
@@ -1626,7 +1632,6 @@ packages:
 
   libsql@0.5.12:
     resolution: {integrity: sha512-TikiQZ1j4TwFEqVdJdTM9ZTti28is/ytGEvn0S2MocOj69UKQetWACe/qd8KAD5VeNnQSVd6Nlm2AJx0DFW9Ag==}
-    cpu: [x64, arm64, wasm32, arm]
     os: [darwin, linux, win32]
 
   locate-path@6.0.0:
@@ -1960,6 +1965,10 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
+
+  types@0.1.1:
+    resolution: {integrity: sha512-JuntZtJj4MKLE9x/XBs7IjsznYhzETwr34pw3XJTKvgYtAMdeMG+o8x8U85E5Lm6eCPa1DdOdGVsHMwq4ZnZAg==}
+    engines: {node: '>= 0.6.0'}
 
   typescript-eslint@8.33.0:
     resolution: {integrity: sha512-5YmNhF24ylCsvdNW2oJwMzTbaeO4bg90KeGtMjUw0AGtHksgEPLRTUil+coHwCfiu4QjVJFnjp94DmU6zV7DhQ==}
@@ -3854,6 +3863,8 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
+
+  types@0.1.1: {}
 
   typescript-eslint@8.33.0(eslint@9.28.0(jiti@2.4.2))(typescript@5.8.3):
     dependencies:
