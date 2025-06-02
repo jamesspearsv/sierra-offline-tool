@@ -103,13 +103,14 @@ function submitCheckout() {
 <style scoped>
 main {
   display: flex;
-  margin: 1rem;
-  gap: 1rem;
+  /* gap: 1rem; */
+  padding: var(--sp-0);
   position: absolute;
   bottom: 0;
   top: var(--sp-4);
   left: 0;
   right: 0;
+  overflow-x: hidden;
 }
 
 section {
@@ -125,7 +126,7 @@ section {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  /* height: 100%; */
   width: 70%;
 }
 
@@ -145,10 +146,8 @@ section {
   gap: var(--sp-00);
   width: 30%;
   height: 100%;
-  /* background-color: color-mix(in srgb, var(--pico-background-color), #ffffff 4%); */
   background-color: var(--pico-card-sectioning-background-color);
   padding: var(--sp-1);
-  overflow-y: scroll;
   border-radius: 0.5rem;
 }
 
