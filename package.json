@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "pnpm exec concurrently --names server,client -c blue,magenta \"pnpm dev:server\" \"pnpm dev:client\"",
     "dev:client": "pnpm --filter client dev",
-    "dev:server": "pnpm --filter server dev"
+    "dev:server": "pnpm --filter server dev",
+    "build:server": "pnpm --filter server build",
+    "build:client": "pnpm --filter client build",
+    "start": "pnpm --filter server start"
   },
   "keywords": [],
   "author": "",
