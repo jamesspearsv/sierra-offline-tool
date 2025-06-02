@@ -18,11 +18,17 @@ RUN pnpm run -r build
 
 FROM base AS runner
 
+RUN npm install -g pnpm
 WORKDIR /app
 
 COPY --from=build /app/packages/server/dist /app
+COPY --from=build /app/packages/server/package.json /app
+COPY --from=build /app/packages/server/drizzle /app
+
+RUN pnpm install --prod --prefer-offline
+
 COPY --from=build /app/packages/client/dist /app/client
 
 EXPOSE 3000
 
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
