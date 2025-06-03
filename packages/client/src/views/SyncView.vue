@@ -46,7 +46,7 @@ function exportCheckouts() {
 
 async function updateCheckouts() {
   if (!checkouts.value || !checkouts.value?.length) return
-  const url = 'http://localhost:3000/sync'
+  const url = 'http://localhost:3000/api/sync'
   const checkoutIDs = checkouts.value.map((checkout) => checkout.id)
   const res = await fetch(url, {
     method: 'POST',

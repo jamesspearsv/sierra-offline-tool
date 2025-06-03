@@ -29,7 +29,7 @@ function removeItem(index: number) {
 }
 
 function submitCheckout() {
-  const url = 'http://localhost:3000/checkouts'
+  const url = 'http://localhost:3000/api/checkouts'
 
   async function postCheckout() {
     const res = await fetch(url, {

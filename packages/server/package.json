@@ -17,9 +17,9 @@
     "hono": "^4.7.10"
   },
   "devDependencies": {
-    "@types/node": "^20.11.17",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3",
-    "drizzle-kit": "^0.31.1"
+    "@types/node": "^20.17.57",
+    "drizzle-kit": "^0.31.1",
+    "typescript": "^5.8.3"
   }
 }

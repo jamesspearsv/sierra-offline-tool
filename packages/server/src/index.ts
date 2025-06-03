@@ -1,47 +1,17 @@
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import {
-  insertCheckouts,
-  selectCheckouts,
-  UpdateCheckouts,
-  type Result,
-} from './db/queries.js';
+import { serveStatic } from '@hono/node-server/serve-static';
+import { readFile } from 'node:fs/promises';
+import { api } from './apiRouter.js';
 
 const app = new Hono();
 
-app.use('/*', cors());
-
-app.get('/checkouts', async (c) => {
-  const result = await selectCheckouts();
-  return c.json(result);
-});
-
-// TODO: handle failed insertions
-app.post('/checkouts', async (c) => {
-  // To get the JSON body:
-  const { patronBarcode, itemBarcodes } = await c.req.json();
-
-  if (typeof patronBarcode !== 'string' || !(itemBarcodes instanceof Array)) {
-    return c.text('Bad request');
-  }
-
-  const results = await insertCheckouts(
-    patronBarcode,
-    itemBarcodes as string[]
-  );
-
-  return c.json(results);
-});
-
-app.post('/sync', async (c) => {
-  const checkoutIDs = await c.req.json();
-  if (!(checkoutIDs instanceof Array)) {
-    return c.json({ success: false, message: 'Bad request' });
-  }
-
-  const result = await UpdateCheckouts(checkoutIDs as number[]);
-  return c.json(result);
+app.use(cors());
+app.use('/assets/*', serveStatic({ root: './client' }));
+app.route('/api', api);
+app.get('/*', async (c) => {
+  return c.html(readFile('/app/client/index.html', { encoding: 'utf-8' }));
 });
 
 serve(
