@@ -6,11 +6,9 @@ services:
     ports:
       - '3000:3000'
     environment:
-      # Add any environment variables you need here, for example:
       NODE_ENV: production
     restart: unless-stopped
-    # Uncomment if you want to mount code for live development (optional)
     volumes:
-      - app_data:/app/data
+      - app-data:/app/data
 volumes:
-  app_data:
+  app-data:

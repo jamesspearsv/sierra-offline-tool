@@ -30,4 +30,4 @@ coverage
 *.tsbuildinfo
 *.sqlite*
 *.env*
-container_files
+.container*

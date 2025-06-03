@@ -11,7 +11,7 @@
     "build:client": "pnpm --filter client build",
     "start": "pnpm --filter server start",
     "docker:build": "docker build -t sierra-offline --progress=plain .",
-    "docker:run": "docker run -p 3000:3000 sierra-offline"
+    "docker:run": "docker run -p 3000:3000 -v app-data:/app/data sierra-offline"
   },
   "keywords": [],
   "author": "",
