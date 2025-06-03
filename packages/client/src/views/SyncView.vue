@@ -12,7 +12,7 @@ const checkouts = ref<Checkout[] | null>(null)
 onMounted(fetchCheckouts)
 
 async function fetchCheckouts() {
-  const url = 'http://localhost:3000/checkouts'
+  const url = 'http://localhost:3000/api/checkouts'
   const res = await fetch(url)
   const result = await res.json()
   if (result.success) {

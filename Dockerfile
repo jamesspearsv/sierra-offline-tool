@@ -22,12 +22,12 @@ FROM base AS runner
 
 RUN npm install -g pnpm
 WORKDIR /app
-ENV DB_URL=file:checkouts.sqlite
+ENV DB_URL=file:/app/data/db.sqlite
 
 COPY --from=build /app/packages/server/dist /app
 COPY --from=build /app/packages/server/package.json /app
-COPY --from=build /app/packages/server/drizzle /app
-RUN chmod +x /app/migrations-entrypoint.sh
+COPY --from=build /app/packages/server/drizzle /app/drizzle
+RUN chmod +x /app/drizzle/migrations-entrypoint.sh
 
 RUN pnpm install --prod --prefer-offline
 
@@ -35,5 +35,5 @@ COPY --from=build /app/packages/client/dist /app/client
 
 EXPOSE 3000
 
-ENTRYPOINT ["/app/migrations-entrypoint.sh"]
-CMD ["node", "index.js"]
+ENTRYPOINT ["/app/drizzle/migrations-entrypoint.sh"]
+CMD ["node", "/app/index.js"]

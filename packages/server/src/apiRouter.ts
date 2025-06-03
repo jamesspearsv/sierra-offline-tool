@@ -18,7 +18,7 @@ api.post('/sync', async (c) => {
 });
 
 api
-  .get('/api/checkouts', async (c) => {
+  .get('/checkouts', async (c) => {
     const result = await selectCheckouts();
     return c.json(result);
   })
@@ -27,6 +27,7 @@ api
     const { patronBarcode, itemBarcodes } = await c.req.json();
 
     if (typeof patronBarcode !== 'string' || !(itemBarcodes instanceof Array)) {
+      c.status(400);
       return c.text('Bad request');
     }
 
