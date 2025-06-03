@@ -31,3 +31,22 @@ Use the included `DOCKERFILE` and `docker-compose.yaml` to get started.
 Or
 
 1. `docker compose up`
+
+### Public Docker Image
+
+This tool has a public Docker image that can be used in the following `docker-compose.yaml`
+
+```Docker
+services:
+  app:
+    image: docker pull ghcr.io/jamesspearsv/sierra-offline-tool:latest
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
+    volumes:
+      - app-data:/app/data
+volumes:
+  app-data:
+```
