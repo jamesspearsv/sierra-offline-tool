@@ -10,8 +10,13 @@ const app = new Hono();
 app.use(cors());
 app.use('/assets/*', serveStatic({ root: './client' }));
 app.route('/api', api);
+
 app.get('/*', async (c) => {
-  return c.html(readFile('/app/client/index.html', { encoding: 'utf-8' }));
+  if (process.env.NODE_ENV) {
+    return c.html(readFile('/app/client/index.html', { encoding: 'utf-8' }));
+  } else {
+    return c.redirect('http://localhost:5173');
+  }
 });
 
 serve(

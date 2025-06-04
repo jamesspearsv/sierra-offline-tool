@@ -30,6 +30,7 @@ FROM base AS runner
 RUN npm install -g pnpm
 WORKDIR /app
 
+ENV NODE_ENV=production
 ENV DB_URL=file:/app/data/db.sqlite
 
 COPY --from=build /app/packages/server/dist /app

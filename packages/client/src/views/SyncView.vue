@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SERVER_URL } from '@/host'
 import { onMounted, ref } from 'vue'
 type Checkout = {
   id: number
@@ -12,7 +13,8 @@ const checkouts = ref<Checkout[] | null>(null)
 onMounted(fetchCheckouts)
 
 async function fetchCheckouts() {
-  const url = 'http://localhost:3000/api/checkouts'
+  console.log(SERVER_URL)
+  const url = `http://${SERVER_URL}/api/checkouts`
   const res = await fetch(url)
   const result = await res.json()
   if (result.success) {
@@ -45,8 +47,9 @@ function exportCheckouts() {
 }
 
 async function updateCheckouts() {
+  console.log(SERVER_URL)
   if (!checkouts.value || !checkouts.value?.length) return
-  const url = 'http://localhost:3000/api/sync'
+  const url = `http://${SERVER_URL}/api/sync`
   const checkoutIDs = checkouts.value.map((checkout) => checkout.id)
   const res = await fetch(url, {
     method: 'POST',

@@ -1,8 +1,7 @@
 {
   "name": "sierra-offline-tool",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Simple tool to manage offline circulations",
   "scripts": {
     "dev": "pnpm exec concurrently --names server,client -c blue,magenta \"pnpm dev:server\" \"pnpm dev:client\"",
     "dev:client": "pnpm --filter client dev",
@@ -17,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^22.15.29",
     "concurrently": "^9.1.2"
   }
 }
