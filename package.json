@@ -4,11 +4,14 @@
   "description": "Simple tool to manage offline circulations",
   "scripts": {
     "dev": "pnpm run -r --parallel --aggregate-output dev",
+    "build": "pnpm run -r build",
+    "start": "pnpm --filter server start",
+    "preview": "pnpm build && pnpm start",
+    "reset:build": "rm -rf ./packages/server/dist",
     "dev:client": "pnpm --filter client dev",
     "dev:server": "pnpm --filter server dev",
     "build:server": "pnpm --filter server build",
     "build:client": "pnpm --filter client build",
-    "start": "pnpm --filter server start",
     "docker:build": "docker build -t sierra-offline --progress=plain .",
     "docker:run": "docker run -p 3000:3000 -v app-data:/app/data sierra-offline"
   },
@@ -16,7 +19,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.15.29",
-    "concurrently": "^9.1.2"
+    "@types/node": "^22.15.29"
   }
 }

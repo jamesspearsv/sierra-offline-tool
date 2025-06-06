@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/src/index.js",
+    "start": "node dist/index.js",
     "drizzle:push": "pnpm exec drizzle-kit push",
     "drizzle:generate": "pnpm exec drizzle-kit generate",
     "drizzle:studio": "pnpm exec drizzle-kit studio"
