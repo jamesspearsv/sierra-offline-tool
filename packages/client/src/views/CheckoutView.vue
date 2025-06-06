@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import FeatherIcon from '@/components/FeatherIcon.vue'
-import { SERVER_URL } from '@/host'
 
 const inputValue = ref('')
 const patronBarcode = ref('')
@@ -30,10 +29,10 @@ function removeItem(index: number) {
 }
 
 function submitCheckout() {
-  const url = `http://${SERVER_URL}/api/checkouts`
+  const url = `/api/checkouts`
 
   async function postCheckout() {
-    const res = await fetch(url, {
+    const res = await fetch('/api/checkouts', {
       method: 'POST',
       body: JSON.stringify({
         patronBarcode: patronBarcode.value,

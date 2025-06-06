@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Simple tool to manage offline circulations",
   "scripts": {
-    "dev": "pnpm exec concurrently --names server,client -c blue,magenta \"pnpm dev:server\" \"pnpm dev:client\"",
+    "dev": "pnpm run -r --parallel --aggregate-output dev",
     "dev:client": "pnpm --filter client dev",
     "dev:server": "pnpm --filter server dev",
     "build:server": "pnpm --filter server build",
