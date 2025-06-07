@@ -11,7 +11,6 @@ import { logger } from 'hono/logger';
 // console.log(__dirname);
 
 const __dirname = import.meta.dirname;
-console.log(__dirname);
 
 const app = new Hono();
 
@@ -20,21 +19,21 @@ app.use(logger());
 app.use(
   '/assets/*',
   serveStatic({
-    root: '/client',
-    onNotFound(path) {
-      console.log('#############');
-      console.log('* NOT FOUND *');
-      console.log('#############');
-      console.log('current dir:', __dirname);
-      console.log(path);
+    /* BUG
+     * Relative root path will be different
+     * when using pnpm preview and running in production.
+     * How to handle this?
+     */
+    root: process.env.NODE_ENV === 'production' ? './client' : './dist/client',
+    onNotFound(path, c) {
+      console.log('---> Current working dir: ', process.cwd());
+      console.log('---> Looking for:', path);
     },
   })
 );
 app.route('/api', api);
 
-// TODO: fix this!
-app.get('*', async (c) => {
-  // if (c.req.path.match('\.')) return;
+app.get('/*', async (c) => {
   return c.html(
     readFile(__dirname + '/client/index.html', { encoding: 'utf-8' })
   );
