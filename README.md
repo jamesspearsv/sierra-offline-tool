@@ -39,7 +39,7 @@ This tool has a public Docker image that can be used in the following `docker-co
 ```Docker
 services:
   app:
-    image: docker pull ghcr.io/jamesspearsv/sierra-offline-tool:latest
+    image: ghcr.io/jamesspearsv/sierra-offline-tool:latest
     ports:
       - '3000:3000'
     environment:
