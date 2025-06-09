@@ -3,11 +3,10 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { readFile } from 'node:fs/promises';
-import { api } from './apiRouter.js';
+import { api } from './api.js';
 import { logger } from 'hono/logger';
 
 // TODO: fix this!
-// const __dirname = fileURLToPath(import.meta.dirname);
 // console.log(__dirname);
 
 const __dirname = import.meta.dirname;

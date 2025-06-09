@@ -60,7 +60,16 @@ function submitCheckout() {
       <form @submit.prevent="handleSubmit">
         <fieldset>
           <label for="barcode">{{ !patronBarcode ? 'Patron' : 'Item' }} Barcode</label>
-          <input type="text" name="barcode" v-model.trim="inputValue" autocomplete="off" />
+          <input
+            type="text"
+            name="barcode"
+            v-model="inputValue"
+            autocomplete="off"
+            minlength="14"
+            maxlength="14"
+            autofocus
+            required
+          />
         </fieldset>
       </form>
       <button
