@@ -3,11 +3,17 @@ import {
   insertCheckouts,
   selectCheckouts,
   UpdateCheckouts,
-  type Result,
 } from './db/queries.js';
+import type { Result } from '@packages/common';
 
 export const api = new Hono();
 
+/** 
+TODO: update endpoint responses
+- Each endpoint should return... 
+- an appropriate status code
+- either data or an error message 
+*/
 api.post('/sync', async (c) => {
   const checkoutIDs = await c.req.json();
   if (!(checkoutIDs instanceof Array)) {
@@ -53,6 +59,9 @@ api
       patronBarcode,
       itemBarcodes as string[]
     );
+
+    if (!results.success)
+      return c.json({ message: 'Server Error' }).status(500);
 
     return c.json(results);
   });

@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "@packages/server",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -12,14 +12,15 @@
   "dependencies": {
     "@hono/node-server": "^1.14.3",
     "@libsql/client": "^0.15.8",
+    "@packages/common": "workspace:^",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.44.1",
     "hono": "^4.7.10"
   },
   "devDependencies": {
-    "tsx": "^4.19.4",
     "@types/node": "^20.17.57",
     "drizzle-kit": "^0.31.1",
+    "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
 }

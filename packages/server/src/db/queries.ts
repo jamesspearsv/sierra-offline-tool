@@ -1,13 +1,7 @@
 import { eq, isNull } from 'drizzle-orm';
 import { db } from './connection.js';
 import { checkouts } from './schema.js';
-
-export type Result<T = string> =
-  | {
-      success: true;
-      data: T;
-    }
-  | { success: false; message: string };
+import type { Result } from '@packages/common';
 
 export async function selectCheckouts(): Promise<
   Result<{ id: number; patronBarcode: string; itemBarcode: string }[]>
@@ -19,8 +13,8 @@ export async function selectCheckouts(): Promise<
       .where(isNull(checkouts.syncStatus));
     return { success: true, data: rows };
   } catch (error) {
-    console.log(error);
-    return { success: false, message: 'Unable to select checkouts' };
+    if (error instanceof Error) return { success: false, error };
+    throw new Error('Server Error');
   }
 }
 
@@ -45,13 +39,7 @@ export async function insertCheckouts(
       data: { patronBarcode, itemBarcodes },
     };
   } catch (error) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
-
+    if (error instanceof Error) return { success: false, error };
     throw new Error('Server error');
   }
 }
@@ -69,7 +57,7 @@ export async function UpdateCheckouts(checkoutIDs: number[]): Promise<Result> {
 
     return { success: true, data: 'Updated all checkouts' };
   } catch (error) {
-    console.error(error);
-    return { success: false, message: 'Unable to update checkouts' };
+    if (error instanceof Error) return { success: false, error };
+    throw new Error('Server Error');
   }
 }
